@@ -1,0 +1,38 @@
+﻿@model ProductCatalogTask.Models.ViewModels.ProductListViewModel
+
+@{
+    ViewBag.Title = "Pooducts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Products</h2>
+
+
+@*@using (Html.BeginForm("", "Products", FormMethod.Get, new { @class = "form-inline" }))*@
+@using (Html.BeginForm("Index","Products"))
+{ 
+        
+<div class="input-group">
+    @Html.LabelFor(model => model.Categories, htmlAttributes: new { @class = "control-label" })
+    &nbsp;
+
+    <select multiple class="form-control selectpicker" data-live-search="true" id="categories" name="categories">
+        @foreach (var item in Model.Categories)
+        {
+            <option value="@item.Value" @{ if (item.Selected) { <text> selected </text> } }>@item.Text</option>
+        }
+    </select>
+    <button type="submit" class="btn btn-primary">Filter</button>
+    &nbsp;
+    @if (User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Create New", "CreateOrEdit", null, new { @class = "btn btn-primary" })
+    }
+    </div>
+}
+
+@foreach (var item in Model.Products)
+{
+    @Html.Partial("_Product", item);
+}
+
+

@@ -1,0 +1,43 @@
+﻿@model ProductCatalogTask.Models.Core.Domain.Product
+<div class="row p-2 bg-white border rounded">
+    <div class="col-md-3 mt-1">
+        <img class="img-fluid img-responsive rounded product-image" src="~/Content/Images/product.png" alt="Product Image Here">
+    </div>
+    <div class="col-md-6 mt-1">
+        <h5>@Model.Name</h5>
+        <div class="mt-1 mb-1 spec-1">
+            @if (Model.Categories.Count > 0)
+            {
+                <span>Categories</span>
+            }
+            @foreach (var category in Model.Categories)
+            {
+                <span>
+                    @Html.ActionLink("#" + category.Name, "Index", "Products", new { categories = category.Id }, null)
+                </span>
+                <span class="dot"></span>
+            }
+        </div>
+        <br>
+        <p class="text-justify text-truncate para mb-0">
+            @Model.Description.
+        </p>
+    </div>
+    <div class="align-items-center align-content-center col-md-3 border-left mt-1">
+        <div class="d-flex flex-row align-items-center">
+            <h4 class="mr-1"> @Html.DisplayFor(model => model.Price) sp</h4>@*<span class="strike-text">sp</span>*@
+        </div>
+        @using (Html.BeginForm("Delete", "Products", new { id = Model.Id }))
+        {
+    <div class="d-flex flex-column mt-4">
+        @if (User.IsInRole("Admin"))
+        {
+            @Html.ActionLink("Edit", "CreateOrEdit", new { id = Model.Id }, new { @class = "btn btn-primary mt-2" })
+            <button class="btn btn-danger mt-2" type="submit">Delete</button>
+        }
+            <button class="btn btn-outline-primary btn-sm mt-2" type="button">Add to cart</button>
+        </div>
+        }
+    </div>
+</div>
+
